@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+
+    <style>
+        /* Стили для калькулятора */
+        .calculator {
+            width: 300px;
+            height: 400px;
+            border: 1px solid black;
+            margin: auto;
+            padding: 10px;
+        }
+
+        .display {
+            width: 280px;
+            height: 50px;
+            border: 1px solid black;
+            margin: auto;
+            font-size: 24px;
+            text-align: right;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 70px);
+            grid-template-rows: repeat(5, 50px);
+            gap: 10px;
+        }
+
+        .button {
+            width: 70px;
+            height: 50px;
+            border-radius: 10px;
+            background-color: lightgray;
+            font-size: 18px;
+        }
+
+        /* Стили для кнопок с цифрами */
+        .number {}
+
+        /* Стили для кнопок с операциями */
+        .operation {}
+
+        /* Стили для кнопки с равно */
+        .equal {}
+
+        /* Стили для кнопки с очисткой */
+        .clear {}
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="button number" id="seven">7</button>
+            <button class="button number" id="eight">8</button>
+            <button class="button number" id="nine">9</button>
+            <button class="button operation" id="divide">/</button>
+            <button class="button number" id="four">4</button>
+            <button class="button number" id="five">5</button>
+            <button class="button number" id="six">6</button>
+            <button class="button operation" id="multiply">*</button>
+            <button class="button number" id="one">1</button>
+            <button class="button number" id="two">2</button>
+            <button class="button number" id="three">3</button>
+            <button class="button operation" id="subtract">-</button>
+            <button class="button number" id="zero">0</button>
+            <button class="button number" id="dot">.</button>
+            <button class="button equal" id="equal">=</button>
+            <button class="button operation" id="add">+</button>
+            <button class="clear button" id="clear">C</button>
+        </div>
+    </div>
+    <script>
+        // Код JavaScript для калькулятора
+
+        // Получаем элементы по идентификаторам
+        var display = document.getElementById("display");
+        var seven = document.getElementById("seven");
+        var eight = document.getElementById("eight");
+        var nine = document.getElementById("nine");
+        var divide = document.getElementById("divide");
+        var four = document.getElementById("four");
+        var five = document.getElementById("five");
+        var six = document.getElementById("six");
+        var multiply = document.getElementById("multiply");
+        var one = document.getElementById("one");
+        var two = document.getElementById("two");
+        var three = document.getElementById("three");
+        var subtract = document.getElementById("subtract");
+        var zero = document.getElementById("zero");
+        var dot = document.getElementById("dot");
+        var equal = document.getElementById("equal");
+        var add = document.getElementById("add");
+        var clear = document.getElementById("clear");
+
+        // Объявляем переменные для хранения введенных чисел и операции
+        var firstNumber = "";
+        var secondNumber = "";
+        var operation = "";
+
+        // Функция для обновления дисплея
+        function updateDisplay(value) {
+            display.innerHTML = value;
+        }
+        // Функция для обработки нажатия на кнопку с цифрой
+        function handleNumber(number) {
+            // Если операция не выбрана, то добавляем цифру к первому числу
+            if (operation == "") {
+                firstNumber += number;
+                updateDisplay(firstNumber);
+            }
+            // Иначе добавляем цифру ко второму числу
+            else {
+                secondNumber += number;
+                updateDisplay(secondNumber);
+            }
+        }
+        // Функция для обработки нажатия на кнопку с операцией
+        function handleOperation(op) {
+            // Если первое число не пустое, то выбираем операцию
+            if (firstNumber != "") {
+                operation = op;
+                updateDisplay(operation);
+            }
+        }
+
+        // Функция для обработки нажатия на кнопку с равно
+        function handleEqual() {
+            // Если введены два числа и операция, то выполняем вычисление
+            if (firstNumber != "" && secondNumber != "" && operation != "") {
+                // Преобразуем строки в числа
+                firstNumber = parseFloat(firstNumber);
+                secondNumber = parseFloat(secondNumber);
+                // Объявляем переменную для результата
+                var result;
+                // Выполняем операцию в зависимости от выбранного знака
+                switch (operation) {
+                    case "+":
+                        result = firstNumber + secondNumber;
+                        break;
+                    case "-":
+                        result = firstNumber - secondNumber;
+                        break;
+                    case "*":
+                        result = firstNumber * secondNumber;
+                        break;
+                    case "/":
+                        // Проверяем деление на ноль
+                        if (secondNumber == 0) {
+                            alert("Нельзя делить на ноль!");
+                            return;
+                        }
+                        result = firstNumber / secondNumber;
+                        break;
+                }
+
+                // Обновляем дисплей с результатом
+                updateDisplay(result);
+
+                // Сбрасываем переменные для следующего вычисления
+                firstNumber = "";
+                secondNumber = "";
+                operation = "";
+            }
+        }
+
+        // Функция для обработки нажатия на кнопку с очисткой
+        function handleClear() {
+            // Сбрасываем все переменные и дисплей
+            firstNumber = "";
+            secondNumber = "";
+            operation = "";
+            updateDisplay(0);
+        }
+
+        // Добавляем обработчики событий для всех кнопок
+        seven.addEventListener("click", function () {
+            handleNumber("7");
+        });
+
+        eight.addEventListener("click", function () {
+            handleNumber("8");
+        });
+
+        nine.addEventListener("click", function () {
+            handleNumber("9");
+        });
+
+        divide.addEventListener("click", function () {
+            handleOperation("/");
+        });
+
+        four.addEventListener("click", function () {
+            handleNumber("4");
+        });
+
+        five.addEventListener("click", function () {
+            handleNumber("5");
+        });
+
+        six.addEventListener("click", function () {
+            handleNumber("6");
+        });
+
+        multiply.addEventListener("click", function () {
+            handleOperation("*");
+        });
+
+        one.addEventListener("click", function () {
+            handleNumber("1");
+        });
+
+        two.addEventListener("click", function () {
+            handleNumber("2");
+        });
+
+        three.addEventListener("click", function () {
+            handleNumber("3");
+        });
+
+        subtract.addEventListener("click", function () {
+            handleOperation("-");
+        });
+
+        zero.addEventListener("click", function () {
+            handleNumber("0");
+        });
+
+        dot.addEventListener("click", function () {
+            handleNumber(".");
+        });
+
+        equal.addEventListener("click", function () {
+            handleEqual();
+        });
+
+        add.addEventListener("click", function () {
+            handleOperation("+");
+        });
+
+        two.addEventListener("click", function () {
+            handleNumber("2");
+        });
+
+        three.addEventListener("click", function () {
+            handleNumber("3");
+        });
+
+        subtract.addEventListener("click", function () {
+            handleOperation("-");
+        });
+
+        zero.addEventListener("click", function () {
+            handleNumber("0");
+        });
+
+        dot.addEventListener("click", function () {
+            handleNumber(".");
+        });
+
+        equal.addEventListener("click", function () {
+            handleEqual();
+        });
+
+        add.addEventListener("click", function () {
+            handleOperation("+");
+        });
+
+        clear.addEventListener("click", function () {
+            handleClear();
+        });
+    </script>
+</body>
+
+</html>
